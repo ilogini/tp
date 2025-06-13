@@ -31,10 +31,10 @@
   <div id="scoreboard"></div>
   <button id="restart">Restart</button>
 </div>
-<script src="https://unpkg.com/three@0.160.0/build/three.min.js"></script>
-<script src="https://unpkg.com/three@0.160.0/examples/js/controls/OrbitControls.js"></script>
-<script src="https://unpkg.com/three@0.160.0/examples/js/loaders/GLTFLoader.js"></script>
-<script>
+<script type="module">
+import * as THREE from 'https://unpkg.com/three@0.160.0/build/three.module.js';
+import { OrbitControls } from 'https://unpkg.com/three@0.160.0/examples/jsm/controls/OrbitControls.js';
+import { GLTFLoader } from 'https://unpkg.com/three@0.160.0/examples/jsm/loaders/GLTFLoader.js';
 let scene, camera, renderer, controls, mixer;
 let player, target;
 const animals = [];
@@ -57,7 +57,7 @@ function init() {
   renderer.setSize(window.innerWidth, window.innerHeight);
   document.body.appendChild(renderer.domElement);
 
-  controls = new THREE.OrbitControls(camera, renderer.domElement);
+  controls = new OrbitControls(camera, renderer.domElement);
 
   const light = new THREE.HemisphereLight(0xffffff, 0x444444, 1);
   scene.add(light);
@@ -97,7 +97,7 @@ function init() {
     scene.add(animal);
   }
 
-  const gltfLoader = new THREE.GLTFLoader();
+  const gltfLoader = new GLTFLoader();
   gltfLoader.setCrossOrigin('anonymous');
   gltfLoader.load('https://threejs.org/examples/models/gltf/RobotExpressive/RobotExpressive.glb', (gltf) => {
     player = gltf.scene;
