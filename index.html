@@ -20,23 +20,35 @@
     position: absolute;
     cursor: pointer;
   }
-  #score {
+  #score, #time {
     font-size: 20px;
     margin-bottom: 10px;
   }
   #restart {
     margin-top: 20px;
   }
+  #scoreboard {
+    margin-top: 20px;
+  }
 </style>
 </head>
 <body>
+<div id="time">Time: 60</div>
 <div id="score">Score: 0</div>
 <div id="box"></div>
+<div id="scoreboard"></div>
 <button id="restart">Restart</button>
 <script>
 let score = 0;
+let timeLeft = 60;
+let timer;
+let gameActive = false;
+const scores = [];
+
 const box = document.getElementById('box');
 const scoreDisplay = document.getElementById('score');
+const timeDisplay = document.getElementById('time');
+const scoreboard = document.getElementById('scoreboard');
 const restartButton = document.getElementById('restart');
 
 function moveBox() {
@@ -47,21 +59,44 @@ function moveBox() {
 }
 
 function incrementScore() {
+  if (!gameActive) return;
   score += 1;
   scoreDisplay.textContent = 'Score: ' + score;
   moveBox();
 }
 
-function resetGame() {
+function startGame() {
   score = 0;
+  timeLeft = 60;
+  gameActive = true;
   scoreDisplay.textContent = 'Score: 0';
+  timeDisplay.textContent = 'Time: ' + timeLeft;
   moveBox();
+  clearInterval(timer);
+  timer = setInterval(() => {
+    timeLeft -= 1;
+    timeDisplay.textContent = 'Time: ' + timeLeft;
+    if (timeLeft <= 0) endGame();
+  }, 1000);
+}
+
+function endGame() {
+  clearInterval(timer);
+  gameActive = false;
+  scores.push(score);
+  updateScoreboard();
+}
+
+function updateScoreboard() {
+  const sorted = [...scores].sort((a, b) => b - a);
+  scoreboard.innerHTML = '<h3>Ranking</h3>' +
+    sorted.map((s, i) => `<div>${i + 1}. ${s}</div>`).join('');
 }
 
 box.addEventListener('click', incrementScore);
-restartButton.addEventListener('click', resetGame);
+restartButton.addEventListener('click', startGame);
 
-moveBox();
+startGame();
 </script>
 </body>
 </html>
