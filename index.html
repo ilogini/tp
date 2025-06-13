@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Simple Click Game</title>
+<style>
+  body {
+    font-family: Arial, sans-serif;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 100vh;
+    margin: 0;
+  }
+  #box {
+    width: 50px;
+    height: 50px;
+    background-color: #3498db;
+    position: absolute;
+    cursor: pointer;
+  }
+  #score {
+    font-size: 20px;
+    margin-bottom: 10px;
+  }
+  #restart {
+    margin-top: 20px;
+  }
+</style>
+</head>
+<body>
+<div id="score">Score: 0</div>
+<div id="box"></div>
+<button id="restart">Restart</button>
+<script>
+let score = 0;
+const box = document.getElementById('box');
+const scoreDisplay = document.getElementById('score');
+const restartButton = document.getElementById('restart');
+
+function moveBox() {
+  const maxX = window.innerWidth - 50;
+  const maxY = window.innerHeight - 50;
+  box.style.left = Math.floor(Math.random() * maxX) + 'px';
+  box.style.top = Math.floor(Math.random() * maxY) + 'px';
+}
+
+function incrementScore() {
+  score += 1;
+  scoreDisplay.textContent = 'Score: ' + score;
+  moveBox();
+}
+
+function resetGame() {
+  score = 0;
+  scoreDisplay.textContent = 'Score: 0';
+  moveBox();
+}
+
+box.addEventListener('click', incrementScore);
+restartButton.addEventListener('click', resetGame);
+
+moveBox();
+</script>
+</body>
+</html>
